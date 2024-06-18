@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Favorite pictures</title>
+    <style>
+    .navbar{
+        text-align:center;
+        background-color : rgb(173, 227, 247);
+        color:black;
+        font-family:'Times New Roman';
+        font-weight: bold;
+    }
+    .favbar{
+        color: black;
+        text-align: center;
+        font-size: xx-large;
+        font-family:'Times New Roman';
+    }
+</style>
+</head>
+<body style="background: white">
+    <div>
+        <h1 class="navbar">Image_Retrieval_System_by_2253744_Lin Juekai </h1>
+        <h2 class="favbar">Your favorite pictures:</h2>
+    </div>
+    <div id="main" class="container">
+        <table class="table">       <!--设置收藏图片的展示表格-->
+            <tr id="favorite_row" style="display: grid;grid-template-columns: repeat(4, 337px); grid-template-rows: repeat(300px); height: 200px;gap: 10px;"></tr></table>
+        <div id="imgBox" style="display:none"></div>
+    </div>
+</body>
+</html>
+<script>
+    var favorite_row = document.getElementById('favorite_row');
+    var favorite_list = JSON.parse(localStorage.getItem("favorite"))
+    for (var i = 0; i < favorite_list.length; i++) {
+        var imgBox = document.getElementById("imgBox");                     //获取图片展示表格
+        imgBox.innerHTML += "<img id='img" + i + "' width=auto height='200' style='margin: 20px' '/>";
+        var imgObjPreview = document.getElementById("img" + i);             //获取图片元素单元
+        imgObjPreview.src = "favorite/" + favorite_list[i].split("result/")[1];
+        var newTd = document.createElement('td');                          //建立新的单元格，并且在下文实现样式设计
+        newTd.innerHTML = `<div style="background-color: rgb(173, 227, 247);">
+                      <div><img id = "favo${i}" src=${imgObjPreview.src} alt="Norway" style="transition: 0.3s;height: 200px;width: auto;padding: 5px;"></div>
+                      <button id="remove${i}" style="border: none;background-color: transparent;color: black;width: 20px;height: 20px;margin-top:-15px;margin-left:150px;font-size: x-large;font-weight: bolder;" onclick="deleteFavorite(${i})">★</button>
+                      </div>`;
+        favorite_row.appendChild(newTd);                                    //实现图片的添加展示
+    };
+    function deleteFavorite(id) {
+        var favorite_list = JSON.parse(localStorage.getItem("favorite"));
+        favorite_list.splice(id, 1);
+        localStorage.setItem("favorite", JSON.stringify(favorite_list));
+        location.reload();                                                  //重新加载页面或更新页面中的内容
+        var delButton = document.getElementById("remove" + id);
+        delButton.innerHTML = '✰';
+        alert("Successfully deleted this image from your favorites!");      //弹窗跳出提示
+    }                                                                       //实现移除收藏文件夹的设置
+</script>

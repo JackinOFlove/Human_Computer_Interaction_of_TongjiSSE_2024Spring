@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Image Retrieval System</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css" rel="stylesheet">
+    <meta http-equiv='cache-control' content="no-cache, must-revalidate, post-check=0, pre-check=0">
+    <meta http-equiv='expires' content='0'>
+    <meta http-equiv='pragma' content='no-cache'>
+    <meta http-equiv="cache-control" content="max-age=0" />
+    <meta http-equiv="cache-control" content="no-cache" />
+    <meta http-equiv="expires" content="0" />
+    <meta http-equiv="expires" content="Tue, 01 Jan 1980 1:00:00 GMT" />
+    <meta http-equiv="pragma" content="no-cache" />
+    <link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css">
+    <script src="http://ajax.aspnetcdn.com/ajax/jquery/jquery-1.9.0.js"></script>
+    <script src="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/js/bootstrap.min.js"></script>
+    <script src="http://ajax.aspnetcdn.com/ajax/knockout/knockout-2.2.1.js"></script>
+<style>
+    .file{
+        background-color :rgb(39, 155, 198);
+    }
+    .navbar{
+        text-align:center;
+        background-color : rgb(173, 227, 247);
+        color:black;
+        font-family:'Times New Roman';
+        font-weight: bold;
+    }
+    .tabar{
+        color: black;
+        font-size: x-large;
+        font-family:'Times New Roman';
+        font-weight:bold;
+    }
+    sea_fav_button{
+        width: 100px;
+        background: rgb(39, 155, 198);
+        color: black;
+        font-family:'Times New Roman';
+        font-weight: bold;
+        font-size:large;
+    }
+    .loading{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+</style>
+</head>
+<body style="background: white">
+    <div><h1 class="navbar">Image_Retrieval_System_by_2253744_Lin Juekai </h1></div><br>
+    <div id="mainUi" class="container">
+        <table class="table" style="background: rgb(173, 227, 247);">
+            <tr style="background: rgb(39, 155, 198);">
+                <td class="tabar">Please choose your picture to upload:</td><td></td></tr><tr><td>
+                    <form method=post enctype=multipart/form-data style="margin-left: 150px;margin-top: 20px;"> <!--method="post" :提交表单的 HTTP 方法为 POST 方法。enctype="multipart/form-data" 属性用于支持文件上传。-->
+                        <div style="display: flex;flex-direction: row;">
+                            <div style="display: flex;flex-direction: column;gap: 30px">
+                                <input type="file" name="file" id="file" class="file" required onchange="Preview(this)" style="font-family:'Times New Roman'; font-weight: bold;">   <!--Preview(this)：用于预览所选文件。-->
+                                <input type=submit value="Search" onclick="Start()" style="width: 100px; background: rgb(39, 155, 198);color: black;font-family:'Times New Roman'; font-weight: bold;font-size:large">  <!--submit：点击后表单会被提交。-->
+                                <button onclick="Sub()" style="width: 100px; background: rgb(39, 155, 198); color: black;font-family:'Times New Roman'; font-weight: bold; font-size:large">Favorites</button>    <!--收藏页面按键-->
+                            </div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <h4 style="color: black;font-family:'Times New Roman'; font-weight: bold;">The picture you choose: &nbsp;&nbsp;&nbsp;&nbsp; </h4>
+                            <img id="picImg" src="" width="300" />
+                        </div>
+                    </form>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div class="loading"><img id="load" src="/images/ajax-loader.gif" style="height:100px;display:none;"></div>
+    <div id="main" class="container">
+        <table id="table" class="table" style="background: rgb(173, 227, 247); display:none;">
+            <tbody style="display: flex; flex-direction: column;">
+                <tr style="display: none; background: rgb(39, 155, 198)" id="overview">     <!--第一行：标题tabar-->
+                    <td class="tabar">There are 9 similar images:</td><td></td></tr>
+                 <tr id="clear_button" style="display:none;">       <!--第二行：Clear按键-->
+                <td><a href=""><button id="clear" style="display:none;background: rgb(39, 155, 198);color: black;font-family:'Times New Roman'; font-weight: bold;font-size:large;width:100px;">Clear</button></a>
+                </td><td></td></tr>
+                <tr>        <!--第三行：Filter按键-->
+                    <td><select id="select" style="display:none;background: rgb(39, 155, 198);color:black;font-family:'Times New Roman';font-weight:bold;text-align:center;font-size:large;" onclick="Filter()">
+                            <option value="" disabled selected>Filter</option><option>All</option></select></td></tr>
+                <tr id="image_row" style="display: grid; grid-template-columns: repeat(3, 1fr); grid-template-rows: repeat(3, 250px); gap: 0px;"></tr>      <!--第四行：显示图片-->
+                <script>
+                    var image_row = document.getElementById('image_row');
+                    for (var i = 0; i < 9; i++) {
+                        var newTd = document.createElement('td');      //创建新的单元格
+                        newTd.innerHTML = `<div style="background-color:white;">
+                        <div><img id="img${i}" alt="Norway" style="transition: 0.3s; height: 200px; width: auto; padding: 5px;"></div>
+                        <div style="display: flex; flex-direction: row;">
+                            <p id="tag${i}" style="width: 100px;height: 20px;text-align: center;font-weight: bold;font-family:'Times New Roman';background: #DDDDDD;color: black;margin-top: 10px;margin-left: 120px;"></p>
+                            <button id="img${i}B" style="border: none;background-color: transparent;color: black;width: 20px;height: 20px;font-size: x-large;font-weight: bolder;margin: 7px;" onclick="addFavorite('img${i}')">✰</button>
+                        </div></div>`;                                  //单元格图片、单元格标签、单元格收藏键
+                        image_row.appendChild(newTd);
+                    }
+                </script>
+            </tbody>
+        </table>
+    </div>
+        <script type="text/javascript">
+            var res = {};
+            function Sub() {
+                window.location.href = "/sub"
+            }                                   //实现收藏页面的跳转
+            function Preview() {
+                var reader = new FileReader();                      //先创建一个 FileReader 对象
+                pic = document.getElementById('file').files[0];     //获取选择的文件对象
+                reader.readAsDataURL(pic);                          //使用readAsDataURL()方法将文件读取为 Data URL
+                reader.onload = function (e) {                      //设置onload事件处理程序，该事件在文件读取完成时触发，获取 Data URL 并将其设置为图像元素的源：
+                    document.getElementById('picImg').src = this.result;
+                };
+            }
+            function addFavorite(item) {
+                var favoriteList = JSON.parse(localStorage.getItem("favorite"));        //获取收藏列表
+                localStorage.removeItem("favorite")                                     //清除原始的收藏列表
+                if (favoriteList === null)
+                    favoriteList = []
+                var id = item + "B"
+                if (document.getElementById(id).innerHTML === "✰") {                    //如果未收藏，设置为收藏状态
+                    favoriteList.push(document.getElementById(item).src);
+                    document.getElementById(id).innerHTML = "★";
+                    var formData = new FormData();
+                    formData.append("url", document.getElementById(item).src.split("result/")[1])
+                    $.ajax({url: 'addFavorite',type: 'POST',data: formData, cache: false,contentType: false, enctype: 'multipart/form-data', processData: false,});
+                    alert("Successfully add this image to your favorites!")              //跳出弹窗提示
+                }
+                else {                                                                   //如果已收藏，则删去
+                    var index = favoriteList.indexOf(document.getElementById(item).src);
+                    favoriteList.splice(index, 1)
+                    document.getElementById(id).innerHTML = "✰";
+                    alert("Successfully deleted this image from your favorites!")        //跳出弹窗提示
+                }
+                localStorage.setItem("favorite", JSON.stringify(favoriteList));
+            }
+            function Filter() {
+                var obj = document.getElementById("select")                                 //获取Filter标签
+                var index = document.getElementById("select").options.selectedIndex
+                var text = obj[index].text                                                  //获取标签内容
+                if (text !== "All" && text !== "Filter") {                                  //如果标签内容不是All和Filter
+                    for (var i = 0; i < 9; i++) {
+                        var id = "tag" + i;
+                        var img_id = "img" + i;
+                        if (res.tags[i] != text) {
+                            document.getElementById(img_id).style.opacity = 0.1             //设置未被选择的单元格样式：变浅
+                            document.getElementById(id).style.opacity = 0.1
+                            document.getElementById(img_id + "B").style.opacity = 0.1
+                        }
+                        else {
+                            document.getElementById(img_id).style.opacity = 1               //设置被选择的单元格样式：正常
+                            document.getElementById(id).style.opacity = 1
+                            document.getElementById(img_id + "B").style.opacity = 1
+                        }
+                    }
+                }
+                else {                                                                      //如果标签内容是All和Filter的话就全设置为正常的了
+                    for (var i = 0; i < 9; i++) {
+                        var id = "tag" + i;
+                        var img_id = "img" + i;
+                        document.getElementById(img_id).style.opacity = 1
+                        document.getElementById(id).style.opacity = 1
+                        document.getElementById(img_id + "B").style.opacity = 1
+                    }
+                }
+            }
+            function Start() {                                              //和search按键绑定的start开始函数
+                var selectButton = document.getElementById("select");
+                while (selectButton.options.length > 2)
+                    selectButton.remove(selectButton.options.length - 1);   //先清空Filter的选项
+                $('#load').show();                                          //显示加载标签
+                $("form").submit(function (evt) {
+                    evt.preventDefault();
+                    var formData = new FormData($(this)[0]);                //储存表单中的内容
+                    $.ajax({url: 'imgUpload',type: 'POST',data: formData,cache: false,contentType: false,enctype: 'multipart/form-data', processData: false,
+                        success: function (response) {                      //如果ajax请求发送成功
+                            res = response
+                            $('#load').hide();                              //加载标签隐藏
+                            $('#clear_button').show();                      //Clear标签显示
+                            $('#overview').show();                          //查找结果显示
+                            var obj = document.getElementById("select");    //更新Filter标签内的信息
+                            for (let i = 0; i < 9; ++i) {
+                                var flag = 1;
+                                for (let j = 0; j < i; ++j)                 //检查当前标签是否已存在于之前的选项中
+                                    if (res.tags[i] == res.tags[j]) {
+                                        flag = 0;
+                                        break;
+                                    }
+                                if (flag) {
+                                    var option = document.createElement('option');
+                                    option.value = 'optionValue';
+                                    option.text = res.tags[i];              //标签设为tag
+                                    obj.add(option);
+                                }                                           //如果有新的标签，创建一个新的选项并添加到 select 元素中
+                            }
+                            $('#select').show();                            //再把新的Filter标签显示出来
+                            var favoriteList = JSON.parse(localStorage.getItem("favorite"));                //获取 favoriteList 数组
+                            if (favoriteList === null)
+                                favoriteList = []
+                            for (let i = 0; i < 9; i++) {
+                                document.getElementById(`tag${i}`).innerHTML = response.tags[i];            //获取tag
+                                document.getElementById(`img${i}`).src = response[`image${i}`];
+                                if (favoriteList.indexOf(document.getElementById(`img${i}`).src) !== -1)
+                                    document.getElementById(`img${i}B`).innerHTML = "★";
+                                else
+                                    document.getElementById(`img${i}B`).innerHTML = "✰";
+                            }                                                                               //更新标签和图像元素的内容
+                            $('#table').show();               //重新显示更新后的table
+                            $('#clear').show();               //重新显示更新后的Clear按键
+                        }
+                    });
+                    return false;
+                })
+            };
+        </script>
+</body>
+</html>
