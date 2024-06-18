@@ -1,0 +1,118 @@
+@charset "UTF-8";
+
+/*最上方导航栏*/
+.navbar {
+    font-size: 35px;
+    text-align: center;
+    background-color: rgb(173, 227, 247);
+    color: black;
+    font-family: 'Times New Roman', Times, serif;
+    font-weight: bold;
+}
+
+/*overview的介绍内容*/
+.overviewbar {
+    margin-left: 390px;
+    font-size: 20px;
+    background-color: white;
+    color: black;
+    font-family: 'Times New Roman', Times, serif;
+    font-weight: bold;
+}
+
+/*detail的介绍内容*/
+.detailbar {
+    margin-left: 500px;
+    font-size: 20px;
+    color: black;
+    font-family: 'Times New Roman', Times, serif;
+    font-weight: bold;
+}
+
+/*detail的介绍内容*/
+.buttonbar {
+    margin-left: 350px;
+    font-size: 20px;
+    color: black;
+    font-family: 'Times New Roman', Times, serif;
+    font-weight: bold;
+}
+
+/*搜索输入内容的格式确定*/
+input {
+    margin-top: 20px;
+    border-color: black;
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 18px;
+    font-weight: 500;
+    color: black;
+    margin-left: 460px;
+    width: 500px;
+    height: 25px;
+}
+
+/*显示图片部分的容器*/
+.container {
+    margin: auto;
+    display: flex;
+    width: 1400px;
+}
+
+/*每一张图片显示的面板*/
+.panel {
+    font-family: 'Times New Roman', Times, serif;
+    background-size: cover;
+    background-position: center;
+    height: 530px;
+    border-radius: 10px;
+    color: white;
+    margin: 10px;
+    position: relative;
+}
+
+/*选择按键的显示*/
+.clickbutton {
+    margin-top: 3px;
+    text-align: center;
+    font-weight: bold;
+    font-size: medium;
+    font-family: 'Times New Roman', Times, serif;
+    border-color: rgb(39, 155, 198);
+    background-color: rgb(173, 227, 247);
+    border-radius: 3px;
+    width: 70px;
+    height: 30px;
+}
+
+/*选择按键鼠标飘过的显示*/
+.clickbutton:hover {
+    text-align: center;
+    font-weight: bold;
+    font-size: medium;
+    font-family: 'Times New Roman', Times, serif;
+    border-color: rgb(171, 228, 248);
+    background-color: rgb(226, 241, 247);
+    border-radius: 3px;
+    width: 70px;
+    height: 30px;
+}
+
+/*存放button的div*/
+.buttondiv {
+    margin-left: 72px;
+}
+
+/*中间的图片面板大小*/
+.panel.middle {
+    flex: 55;
+}
+
+/*左边的图片面板大小*/
+.panel.left {
+    flex: 12;
+}
+
+/*右边的图片面板大小*/
+.panel.right {
+    flex: 12;
+}
