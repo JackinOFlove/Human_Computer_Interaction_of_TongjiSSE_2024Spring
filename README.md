@@ -1,6 +1,6 @@
 <h1>2024 spring HumanComputerInteraction of Tongji University SSE</h1>
 <h3>Tuter:Ying Shen,four assingments</h3>
-  Lab1  ---survey report,   language: pdf,word  (score:10/10)<br>
-  Lab2  ---Rasa Chatgpt, language: python  (score:10/10)<br>
-  Lab3  ---Image-Retrieval, language: html,css,Javascripe,python  (score:10/10)<br>
-  Lab4  ---JishiBuilding Guide, language: html,css,Javascripe  (score:10/10)<br>
+  Lab1  &nbsp&nbsp&nbsp---survey report, &nbsp&nbsplanguage: pdf,word  (score:10/10)<br>
+  Lab2  &nbsp&nbsp&nbsp---Rasa Chatgpt, &nbsp&nbsplanguage: python  (score:10/10)<br>
+  Lab3  &nbsp&nbsp&nbsp---Image-Retrieval, &nbsp&nbsplanguage: html,css,Javascripe,python  (score:10/10)<br>
+  Lab4  &nbsp&nbsp&nbsp---JishiBuilding Guide, &nbsp&nbsplanguage: html,css,Javascripe  (score:10/10)<br>
