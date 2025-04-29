@@ -1,4 +1,4 @@
-//这里存储着济事楼四楼的每个房间的信息：房间号、房间描述(包括房间名称、房间用途和相关人员)
+// 这里存储着济事楼四楼的每个房间的信息：房间号、房间描述(包括房间名称、房间用途和相关人员)
 const JishiRooms = [
     { number: '401', descriptions: '同济大学软件学院招牌🏫', image: "url('./images/401.jpg')" },
     { number: '402', descriptions: '济事楼四楼大厅棋牌室🎲', image: "url('./images/402.jpg')" },
@@ -34,106 +34,118 @@ const JishiRooms = [
     { number: '451', descriptions: '党员办公室🧑‍💻👩‍💻', image: "url('./images/451.jpg')" },
     { number: '455', descriptions: '同济大学软件学院健身房💪', image: "url('./images/455.jpg')" },
     { number: '456', descriptions: '张晓雅 闫鹏 林伊凡 钱银飞 张晶老师的学院办公室🧑👩', image: "url('./images/456.jpg')" },
-]
+];
 
-//这里存储着显示的三张图片的位置：左边，中间和右边
+// 这里存储着显示的三张图片的位置：左边，中间和右边
 const imageOrder = [
     { imageLoacation: 'left' },
     { imageLoacation: 'middle' },
     { imageLoacation: 'right' }
-]
+];
 
-//当前图片：软件学院招牌401
-var currentImage = 33;
-//找到页面预留的上的container
+// 当前图片：软件学院招牌401
+let currentImage = 33;
+// 找到页面预留的上的container
 const container = document.querySelector('.container');
 
-//左箭头
+// 左箭头
 const leftArrow = document.createElement('div');
 leftArrow.innerHTML = `🢀`;
 leftArrow.classList.add("left-arrow");
-leftArrow.style = "display: flex; flex-direction: column; justify-content: center; cursor: pointer;font-size:40px;";
+leftArrow.style = "display: flex; flex-direction: column; justify-content: center; cursor: pointer; font-size: 40px;";
 leftArrow.addEventListener('click', leftPressed);
 
-//右箭头
+// 右箭头
 const rightArrow = document.createElement('div');
 rightArrow.innerHTML = `🢂`;
 rightArrow.classList.add("right-arrow");
-rightArrow.style = "display: flex; flex-direction: column; justify-content: center; cursor: pointer;font-size:40px;";
+rightArrow.style = "display: flex; flex-direction: column; justify-content: center; cursor: pointer; font-size: 40px;";
 rightArrow.addEventListener('click', rightPressed);
 
 updateUI(currentImage);
 
-//搜索内容的找到和绑定
-search = document.getElementById('search-content');
+// 搜索内容的找到和绑定
+const search = document.getElementById('search-content');
 search.addEventListener('keyup', searchRooms);
 
-//按键快捷键的找到和绑定
-collectionButton = document.getElementsByClassName("clickbutton");
+// 按键快捷键的找到和绑定
+const collectionButton = document.getElementsByClassName("clickbutton");
 for (let i = 0; i < collectionButton.length; i++) {
     collectionButton[i].addEventListener('click', () => { buttonPressed(i); });
 }
 
-//按键快捷键绑定的函数
+// 按键快捷键绑定的函数
 function buttonPressed(i) {
     container.innerHTML = "";
     currentImage = i + 33;
     updateUI(currentImage);
 }
 
-//左箭头按键绑定的函数
+// 左箭头按键绑定的函数
 function leftPressed() {
     container.innerHTML = "";
     currentImage = (currentImage + JishiRooms.length - 1) % JishiRooms.length;
     updateUI(currentImage);
 }
 
-//右箭头按键绑的函数
+// 右箭头按键绑的函数
 function rightPressed() {
     container.innerHTML = "";
     currentImage = (currentImage + 1) % JishiRooms.length;
     updateUI(currentImage);
 }
 
-//以currentImage为传入参数更新container中的图片显示UI
+// 以currentImage为传入参数更新container中的图片显示UI
 function updateUI(currentImage) {
     container.appendChild(leftArrow);
-    imageOrder.forEach(data => {
-        index = imageOrder.indexOf(data);
+
+    imageOrder.forEach((data, index) => {
         const panel = document.createElement('div');
         panel.classList.add('panel', data.imageLoacation);
-        let room = JishiRooms[(currentImage + index) % JishiRooms.length];
+
+        const roomIndex = (currentImage + index) % JishiRooms.length;
+        const room = JishiRooms[roomIndex];
+
         panel.style.backgroundImage = room.image;
         panel.innerHTML = `
-            <h3 style="font-family: 'Times New Roman';margin-top: 420px;opacity: 1;text-align: center;font-size:36px;">${room.number}</h3>
-            <p style="font-family: 'Times New Roman';margin-top: -40px;opacity: 1;text-align: center;font-size:18px;">${room.descriptions}</p>`;
+            <h3 style="font-family: 'Times New Roman'; margin-top: 420px; opacity: 1; text-align: center; font-size: 36px;">${room.number}</h3>
+            <p style="font-family: 'Times New Roman'; margin-top: -40px; opacity: 1; text-align: center; font-size: 18px;">${room.descriptions}</p>`;
+
         container.appendChild(panel);
-    })
+    });
+
     container.appendChild(rightArrow);
 }
 
-//关键词搜索函数的实现
+// 关键词搜索函数的实现
 function searchRooms() {
-    if (search.value !== null && search.value != "") {
-        container.innerHTML = "";
+    container.innerHTML = "";
+
+    if (search.value && search.value.trim() !== "") {
+        const searchValue = search.value.trim();
+        let hasResults = false;
+
         JishiRooms.forEach(room => {
-            if (room.number.includes(search.value) || room.descriptions.includes(search.value)) {
+            if (room.number.includes(searchValue) || room.descriptions.includes(searchValue)) {
                 const panel = document.createElement('div');
                 panel.classList.add('panel', 'middle');
                 panel.style.backgroundImage = room.image;
-                panel.innerHTML = ` <h3 style="font-family: 'Times New Roman';margin-top:  420px;opacity: 1;text-align: center;font-size:36px;">${room.number}</h3>
-                                    <p style="font-family: 'Times New Roman';margin-top: -40px;opacity: 1;text-align: center;font-size:18px;">${room.descriptions}</p>`;
+                panel.innerHTML = `
+                    <h3 style="font-family: 'Times New Roman'; margin-top: 420px; opacity: 1; text-align: center; font-size: 36px;">${room.number}</h3>
+                    <p style="font-family: 'Times New Roman'; margin-top: -40px; opacity: 1; text-align: center; font-size: 18px;">${room.descriptions}</p>`;
+
                 container.appendChild(panel);
+                hasResults = true;
             }
-        })
-        if (container.childNodes.length == 0) {
+        });
+
+        if (!hasResults) {
             const panel = document.createElement('div');
             panel.classList.add('panel', 'middle');
-            panel.innerHTML = `<p style="opacity: 1; color: black; margin-left: 550px;margin-top:100px;font-size:35px;font-weight:bold;">啊哦!无搜索结果😭</p>`;
+            panel.innerHTML = `<p style="opacity: 1; color: black; margin-left: 550px; margin-top: 100px; font-size: 35px; font-weight: bold;">啊哦!无搜索结果😭</p>`;
             container.appendChild(panel);
         }
     } else {
-        container.innerHTML = "";
         updateUI(currentImage);
     }
 }

@@ -8,6 +8,13 @@
     color: black;
     font-family: 'Times New Roman', Times, serif;
     font-weight: bold;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.navbar:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 /*overview的介绍内容*/
@@ -18,6 +25,11 @@
     color: black;
     font-family: 'Times New Roman', Times, serif;
     font-weight: bold;
+    transition: transform 0.3s ease;
+}
+
+.overviewbar:hover {
+    transform: scale(1.02);
 }
 
 /*detail的介绍内容*/
@@ -27,6 +39,11 @@
     color: black;
     font-family: 'Times New Roman', Times, serif;
     font-weight: bold;
+    transition: transform 0.3s ease;
+}
+
+.detailbar:hover {
+    transform: scale(1.02);
 }
 
 /*detail的介绍内容*/
@@ -36,6 +53,11 @@
     color: black;
     font-family: 'Times New Roman', Times, serif;
     font-weight: bold;
+    transition: transform 0.3s ease;
+}
+
+.buttonbar:hover {
+    transform: scale(1.02);
 }
 
 /*搜索输入内容的格式确定*/
@@ -49,6 +71,14 @@ input {
     margin-left: 460px;
     width: 500px;
     height: 25px;
+    transition: all 0.3s ease;
+    border-radius: 5px;
+}
+
+input:focus {
+    box-shadow: 0 0 8px rgba(39, 155, 198, 0.6);
+    transform: translateY(-2px);
+    outline: none;
 }
 
 /*显示图片部分的容器*/
@@ -56,6 +86,7 @@ input {
     margin: auto;
     display: flex;
     width: 1400px;
+    transition: all 0.5s ease;
 }
 
 /*每一张图片显示的面板*/
@@ -68,6 +99,14 @@ input {
     color: white;
     margin: 10px;
     position: relative;
+    transition: all 0.4s ease;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.panel:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
 }
 
 /*选择按键的显示*/
@@ -82,6 +121,8 @@ input {
     border-radius: 3px;
     width: 70px;
     height: 30px;
+    transition: all 0.3s ease;
+    cursor: pointer;
 }
 
 /*选择按键鼠标飘过的显示*/
@@ -95,24 +136,81 @@ input {
     border-radius: 3px;
     width: 70px;
     height: 30px;
+    transform: translateY(-3px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.clickbutton:active {
+    transform: translateY(1px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 /*存放button的div*/
 .buttondiv {
     margin-left: 72px;
+    animation: fadeIn 1s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
 }
 
 /*中间的图片面板大小*/
 .panel.middle {
     flex: 55;
+    animation: scaleIn 0.5s ease;
 }
 
 /*左边的图片面板大小*/
 .panel.left {
     flex: 12;
+    animation: slideInLeft 0.5s ease;
 }
 
 /*右边的图片面板大小*/
 .panel.right {
     flex: 12;
+    animation: slideInRight 0.5s ease;
+}
+
+@keyframes scaleIn {
+    from {
+        transform: scale(0.9);
+        opacity: 0.5;
+    }
+
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+@keyframes slideInLeft {
+    from {
+        transform: translateX(-20px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideInRight {
+    from {
+        transform: translateX(20px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
 }
